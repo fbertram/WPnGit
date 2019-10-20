@@ -5,7 +5,7 @@ set WP=call wp.bat
 REM ============================================================================
 REM export local database prior to cleanup
 
-%WP% db export /sql/db-local-backup.sql
+%WP% db export --skip-extended-insert /sql/db-local-backup.sql
 
 REM ============================================================================
 REM cleanup local database
@@ -30,7 +30,7 @@ REM ===== optimize
 REM ============================================================================
 REM export local database
 
-%WP% db export /sql/db-local.sql
+%WP% db export --skip-extended-insert /sql/db-local.sql
 
 REM ============================================================================
 REM convert database for host & export
@@ -39,7 +39,7 @@ REM convert database for host & export
 %WP% search-replace "http://%WP_LOCAL%" "https://www.%WP_HOST%"
 %WP% search-replace "www.%WP_LOCAL%" "https://www.%WP_HOST%"
 %WP% search-replace "%WP_LOCAL%" "https://www.%WP_HOST%"
-%WP% db export /sql/db.sql
+%WP% db export --skip-extended-insert /sql/db.sql
 
 REM ============================================================================
 REM reset wordpress & re-import local database
