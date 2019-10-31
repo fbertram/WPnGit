@@ -17,8 +17,6 @@ git pull
 # copy files as needed
 
 for d in \
-    wp-content/plugins/FUB \
-    wp-content/plugins/personalize-login \
     wp-content/uploads
 do
     dd=$(dirname $WP_DST/$d)
