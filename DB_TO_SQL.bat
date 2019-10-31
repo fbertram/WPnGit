@@ -4,6 +4,7 @@ set WP=call wp.bat
 
 REM ============================================================================
 REM export local database prior to cleanup
+REM use this to restore the database, in case cleanup goes wrong
 
 %WP% db export --skip-extended-insert /sql/db-local-backup.sql
 
@@ -13,12 +14,14 @@ REM cleanup local database
 REM ===== delete transients
 %WP% transient delete-all
 
-REM ===== empty trash
-REM wp post delete $(wp post list --post_status=trash --format=ids)
+REM ===== empty trash, remove revisions
+del ids.txt
+%WP% post list --post_type='post' --post_status=trash --format=ids >> ids.txt
+echo. >> ids.txt
+%WP% post list --post_type='page' --post_status=trash --format=ids >> ids.txt
+echo. >> ids.txt
+%WP% post list --post_type='revision' --format=ids >> ids.txt
 
-REM ===== remove revisions
-REM wp post delete $(wp post list --post_type='revision' --format=ids) --force
-%WP% post list --post_type='revision' --format=ids > ids.txt
 set IDS=
 set /p IDS=< ids.txt
 del ids.txt
