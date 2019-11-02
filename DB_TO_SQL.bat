@@ -36,6 +36,14 @@ REM export local database
 %WP% db export --skip-extended-insert /sql/db-local.sql
 
 REM ============================================================================
+REM update core, plugin, themes
+REM we want to ensure compatibility, however only on the host side
+
+%WP% core udpate
+%WP% plugin update --all
+%WP% theme update --all
+
+REM ============================================================================
 REM convert database for host & export
 
 %WP% search-replace "http://www.%WP_LOCAL%" "https://www.%WP_HOST%"
