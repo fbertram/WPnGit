@@ -6,9 +6,9 @@ This little project provides a method to:
 * revision-control the site, including files and database entries
 * deploy the local site to the host
 
-Coming from a software background, we really wanted to use git to revision-control our site. There are solutions out there to do so, `VersionPress` being one of them. However, we felt that these solutions had severe shortcomings, most importantly only partial support of WordPress plugins, and the missing ability to do proper merges.
+Coming from a software background, we really wanted to use git to revision-control our site. There are solutions out there to do so, `VersionPress` being one of them. However, we felt that these solutions had severe shortcomings, most importantly only partial support of WordPress plugins and their database entries.
 
-Using plain vanilla git, plus a few scripts we have create a solution that fits our bill a little better. We actually use this approach to manage five of our own websites. Hopefully, you will find this useful.
+Using plain vanilla git plus a few scripts, we have create a solution that fits our bill a little better. We actually use this approach to manage five of our own websites. Hopefully, you will find this project useful.
 
 
 
@@ -76,16 +76,21 @@ To deploy the site, we need ssh access to the hosting provider. Here is how to m
 * ssh into your hosting provider, and clone the git repository. Make sure you set things up to store credentials.
 * launch the script `DEPLOY_TO_HOST.bat` locally this will ssh into your host and call the script `deploy_to_host.sh` on the host. 
 
-That's it! Once the script completes, your site should be updated. For reference, this is what the `deploy_to_host.sh` script does:
+That's it! Once the script completes, your site should be updated. Please note that the way things are implemented right now, this is a one-way street. Your database on the host will be completely overwritten with the copy from localhost.
+
+For reference, this is what the `deploy_to_host.sh` script does:
 
 * This script will perform the following operations:
 * pull the latest version from the git repository
 * copy files. By default, it will only copy files in `wp-content/uploads`, but you can (and should) edit the scripts to also copy other files you need. For us, that's custom plugins and child themes.
 * update the WordPress core, themes, and plugins. We want to make sure that this happens both locally and on the host, to make sure things stay compatible.
-* backup the current database in the `backup` folder, inside your git repository
-* reset the current database, and import the new one from the git repository
+* backup the current database in the `backup` folder, inside your git repository. You can use this backup in case something goes wrong.
+* reset the current database, and import the new one from the git repository.
 
-As indicated in the text, you might want to apply some customizations to the script.
+As indicated in the text, you might want to apply some customizations to the script. Some things to think about:
+
+* include further files or folders you want copied from the repository. You have the full WordPress install from localhost in the repository, only exception being `wp-config.php`. It is really up to you which files you feel you want to replace.
+* possibly save/ restore some data from the hosted site, e.g. user data. This is most important for sites users can sign up/ subscribe to.
 
 ## Command Line Stuff
 
