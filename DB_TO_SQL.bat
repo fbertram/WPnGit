@@ -39,7 +39,7 @@ REM ============================================================================
 REM update core, plugin, themes
 REM we want to ensure compatibility, however only on the host side
 
-%WP% core udpate
+%WP% core update
 %WP% plugin update --all
 %WP% theme update --all
 
