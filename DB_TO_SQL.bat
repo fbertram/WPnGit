@@ -15,17 +15,20 @@ REM ===== delete transients
 %WP% transient delete-all
 
 REM ===== empty trash, remove revisions
-del ids.txt
-%WP% post list --post_type='post' --post_status=trash --format=ids >> ids.txt
-echo. >> ids.txt
-%WP% post list --post_type='page' --post_status=trash --format=ids >> ids.txt
-echo. >> ids.txt
-%WP% post list --post_type='revision' --format=ids >> ids.txt
-
-set IDS=
+%WP% post list --post_type='post' --post_status=trash --format=ids > ids.txt
 set /p IDS=< ids.txt
-del ids.txt
 for %%i in (%IDS%) do %WP% post delete %%i --force
+del ids.txt
+
+%WP% post list --post_type='page' --post_status=trash --format=ids > ids.txt
+set /p IDS=< ids.txt
+for %%i in (%IDS%) do %WP% post delete %%i --force
+del ids.txt
+
+%WP% post list --post_type='revision' --format=ids > ids.txt
+set /p IDS=< ids.txt
+for %%i in (%IDS%) do %WP% post delete %%i --force
+del ids.txt
 
 REM ===== optimize
 %WP% db optimize
